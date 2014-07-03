@@ -1,0 +1,37 @@
+header = Header.new
+header.describe_lines do |l|
+  l.line do |f|
+    f.label "COFERMETA", 12
+    f.label "DATA:"
+    f.value :data, 10, :string
+  end
+  
+end
+  
+body = Body.new
+
+body.describe_columns do |f| 
+
+  f.column :nome, "NOME", 30
+  f.column :telefone,"TELEFONE", 20
+  f.column :valor, "VALOR",10,  :number
+
+end
+
+header.values = {
+  data: DateTime.now.strftime('%d/%m/%y')
+}
+
+footer = Footer.new
+footer.describe_lines do |l|
+  l.line do |f|
+    f.page "PÁGINA #CURRENT de #TOTAL", :center
+  end
+end
+
+
+body.data = @data
+
+report =  DotReport.new(body,header,footer)
+report.generate.to_s
+
